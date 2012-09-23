@@ -5,7 +5,9 @@ Forked from [http://github.com/moai/luamongo](moai)'s repo.
 C.Farabet: changed Makefile to build against Torch7. Added script to automate build
 on MacOS (MongoDB + Lua Driver). This script can be executed like this:
 
-   curl https://raw.github.com/clementfarabet/luamongo/master/install_mongo+luamongo.sh | bash
+```
+curl https://raw.github.com/clementfarabet/luamongo/master/install_mongo+luamongo.sh | bash
+```
 
 The script assumes that Homebrew is installed and used.
 
