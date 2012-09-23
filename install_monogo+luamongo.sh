@@ -18,7 +18,7 @@ if [[ `uname` == 'Darwin' ]]; then
     brew install scons
 else
     # Unsupported
-    echo '==> platform not supported, aborting (only supporting MacOS for now)'
+    echo 'Platform not supported, aborting...'
     exit
 fi
 
@@ -30,10 +30,12 @@ git clone https://github.com/clementfarabet/luamongo.git
 
 # Build Mongo
 cd mongo
+git pull
 scons all
 scons all install
 
 # Build Lua Driver
 cd ../luamongo
+git pull
 make
 make install

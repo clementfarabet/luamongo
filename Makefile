@@ -1,4 +1,4 @@
-TORCH_PREFIX=`which torch`/../..
+TORCH_PREFIX=$(dirname `which torch`)/../..
 CC= g++
 CFLAGS= -g -O2 -shared -fPIC -I $(TORCH_PREFIX)/include/torch/ -I$(TORCH_PREFIX)/include/mongo/
 AR= ar rcu
