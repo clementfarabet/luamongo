@@ -1,5 +1,6 @@
+TORCH_PREFIX=`which torch`/../..
 CC= g++
-CFLAGS= -g -O2 -shared -fPIC -I /usr/local/include/torch/ -I/usr/local/include/mongo/
+CFLAGS= -g -O2 -shared -fPIC -I $(TORCH_PREFIX)/include/torch/ -I$(TORCH_PREFIX)/include/mongo/
 AR= ar rcu
 RANLIB= ranlib
 RM= rm -f
@@ -11,6 +12,9 @@ LDFLAGS= $(LIBS)
 OBJS = main.o mongo_bsontypes.o mongo_dbclient.o mongo_replicaset.o mongo_connection.o mongo_cursor.o mongo_gridfile.o mongo_gridfs.o mongo_gridfschunk.o mongo_query.o utils.o
 
 all: luamongo
+
+install: luamongo
+	cp $(OUTLIB) $(TORCH_PREFIX)/lib/torch/
 
 clean:
 	$(RM) $(OBJS) $(OUTLIB)
