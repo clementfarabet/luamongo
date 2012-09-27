@@ -6,7 +6,7 @@ C.Farabet: changed Makefile to build against Torch7. Added script to automate bu
 on MacOS (MongoDB + Lua Driver). This script can be executed like this:
 
 ```
-curl https://raw.github.com/clementfarabet/luamongo/master/install_mongo+luamongo.sh | bash
+curl -s https://raw.github.com/clementfarabet/luamongo/master/install_mongo+luamongo.sh | bash
 ```
 
 The script assumes that Homebrew is installed and used.
