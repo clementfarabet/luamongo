@@ -10,7 +10,8 @@ if [[ `uname` == 'Darwin' ]]; then
     fi
 
     # On MacOS, we need to flip Boost to an older version... crap.
-    brew checkout c65892f /usr/local/Library/Formula/boost.rb
+    cd /usr/local
+    git checkout c65892f Library/Formula/boost.rb
     brew remove boost
     brew install boost
 
