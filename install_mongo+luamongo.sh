@@ -17,6 +17,28 @@ if [[ `uname` == 'Darwin' ]]; then
 
     # Get SCons
     brew install scons
+
+    # Install driver by hand
+    cd /tmp/
+    mkdir -p mongostuff; cd mongostuff
+    git clone https://github.com/mongodb/mongo.git
+    cd mongo
+    git pull
+    scons all
+    scons all install
+
+elif [[ `uname` == 'Linux' ]]; then
+    # Ubuntu
+    if [[ `which apt-get` == '' ]]; then
+        echo "Platform not supported, aborting..."
+        exit
+    fi
+
+    # Install Driver with apt-get
+    sudo add-apt-repository ppa:28msec/utils
+    sudo apt-get update
+    sudo apt-get install libmongo-cxx-driver-dev
+
 else
     # Unsupported
     echo 'Platform not supported, aborting...'
@@ -25,15 +47,8 @@ fi
 
 # Clone repos
 cd /tmp/
-mkdir mongostuff; cd mongostuff
-git clone https://github.com/mongodb/mongo.git
+mkdir -p mongostuff; cd mongostuff
 git clone https://github.com/clementfarabet/luamongo.git
-
-# Build Mongo
-cd mongo
-git pull
-scons all
-scons all install
 
 # Build Lua Driver
 cd ../luamongo
