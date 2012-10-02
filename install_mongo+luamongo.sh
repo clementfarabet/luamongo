@@ -51,7 +51,7 @@ mkdir -p mongostuff; cd mongostuff
 git clone https://github.com/clementfarabet/luamongo.git
 
 # Build Lua Driver
-cd ../luamongo
+cd /tmp/luamongo
 git pull
 make
 make install
