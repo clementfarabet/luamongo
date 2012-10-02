@@ -35,9 +35,10 @@ elif [[ `uname` == 'Linux' ]]; then
     fi
 
     # Install Driver with apt-get
+    sudo apt-get -y install python-software-properties
     sudo add-apt-repository ppa:28msec/utils
     sudo apt-get update
-    sudo apt-get install libmongo-cxx-driver-dev
+    sudo apt-get -y install libmongo-cxx-driver-dev
 
 else
     # Unsupported
