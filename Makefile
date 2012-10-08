@@ -1,6 +1,6 @@
 TORCH_PREFIX := $(shell dirname `which torch`)/..
 CC= g++
-CFLAGS= -g -O2 -shared -fPIC -I $(TORCH_PREFIX)/include/torch/ -I$(TORCH_PREFIX)/include/mongo/
+CFLAGS= -g -O2 -shared -fPIC -I $(TORCH_PREFIX)/include/torch/ -I$(TORCH_PREFIX)/include/mongo/ -I$(TORCH_PREFIX)/../include/mongo/
 AR= ar rcu
 RANLIB= ranlib
 RM= rm -f
