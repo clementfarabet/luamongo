@@ -41,6 +41,7 @@ elif [[ `uname` == 'Linux' ]]; then
     sudo apt-get -y install libboost-filesystem-dev
     sudo apt-get -y install libboost-thread-dev
     sudo apt-get -y install libmongo-cxx-driver-dev
+    sudo apt-get -y install mongodb
 
 else
     # Unsupported
