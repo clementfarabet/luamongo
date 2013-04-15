@@ -58,4 +58,10 @@ git clone https://github.com/clementfarabet/luamongo.git
 cd /tmp/mongostuff/luamongo
 git pull
 make
-make install
+
+# Install
+if [[ `uname` == 'Darwin' ]]; then
+    make install
+elif [[ `uname` == 'Linux' ]]; then
+    sudo make install
+fi
