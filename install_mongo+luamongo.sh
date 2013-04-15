@@ -38,6 +38,8 @@ elif [[ `uname` == 'Linux' ]]; then
     sudo apt-get -y install python-software-properties
     sudo add-apt-repository ppa:28msec/utils
     sudo apt-get update
+    sudo apt-get -y install nodejs
+    sudo apt-get -y install npm
     sudo apt-get -y install libboost-filesystem-dev
     sudo apt-get -y install libboost-thread-dev
     sudo apt-get -y install libmongo-cxx-driver-dev
