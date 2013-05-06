@@ -49,7 +49,6 @@ cd mongo
 git checkout v2.4
 git pull
 git apply ../mongo_v2.4_sharedclient.patch
-cd mongo
 if [[ `uname` == 'Darwin' ]]; then
     scons --full --sharedclient install
 elif [[ `uname` == 'Linux' ]]; then
