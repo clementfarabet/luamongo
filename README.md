@@ -2,14 +2,17 @@
 
 Forked from [http://github.com/moai/luamongo](moai)'s repo.
 
+## Easy Install
+
 C.Farabet: changed Makefile to build against Torch7. Added script to automate build
-on MacOS (MongoDB + Lua Driver). This script can be executed like this:
+on MacOS and Ubuntu (MongoDB + Lua Driver). This script can be executed like this:
 
-```
-curl -s https://raw.github.com/clementfarabet/luamongo/master/install_mongo+luamongo.sh | bash
-```
+    curl -s https://raw.github.com/clementfarabet/luamongo/master/install_mongo+luamongo.sh | bash
 
-The script assumes that Homebrew is installed and used.
+(On MacOS, the sript assumes Homebrew is installed).
+
+Note: Mongo 2.4 is built from the sources, with a patch that allows building the client
+as a shared library.
 
 ## Wiki Documentation
 
