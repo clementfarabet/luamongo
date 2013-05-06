@@ -18,15 +18,6 @@ if [[ `uname` == 'Darwin' ]]; then
     # Get SCons
     brew install scons
 
-    # Install driver by hand
-    cd /tmp/
-    mkdir -p mongostuff; cd mongostuff
-    git clone https://github.com/mongodb/mongo.git
-    cd mongo
-    git pull
-    scons all
-    scons all install
-
 elif [[ `uname` == 'Linux' ]]; then
     # Ubuntu
     if [[ `which apt-get` == '' ]]; then
@@ -35,15 +26,9 @@ elif [[ `uname` == 'Linux' ]]; then
     fi
 
     # Install Driver with apt-get
-    sudo apt-get -y install python-software-properties
-    sudo add-apt-repository ppa:28msec/utils
-    sudo apt-get update
-    sudo apt-get -y install nodejs
-    sudo apt-get -y install npm
+    sudo apt-get -y install scons
     sudo apt-get -y install libboost-filesystem-dev
     sudo apt-get -y install libboost-thread-dev
-    sudo apt-get -y install libmongo-cxx-driver-dev
-    sudo apt-get -y install mongodb
 
 else
     # Unsupported
@@ -51,17 +36,29 @@ else
     exit
 fi
 
-# Clone repos
+# Fetch LuaMongo driver
 cd /tmp/
-mkdir -p mongostuff; cd mongostuff
 git clone https://github.com/clementfarabet/luamongo.git
-
-# Build Lua Driver
-cd /tmp/mongostuff/luamongo
+cd luamongo
+git checkout master
 git pull
-make
 
-# Install
+# Build and install latest MongoDB - with shared client
+git clone https://github.com/mongodb/mongo.git
+cd mongo
+git checkout v2.4
+git pull
+git apply ../mongo_v2.4_sharedclient.patch
+cd mongo
+if [[ `uname` == 'Darwin' ]]; then
+    scons --full --sharedclient install
+elif [[ `uname` == 'Linux' ]]; then
+    sudo scons --full --sharedclient install
+fi
+
+# Build Lua Driver (uses the client above)
+cd /tmp/luamongo
+make
 if [[ `uname` == 'Darwin' ]]; then
     make install
 elif [[ `uname` == 'Linux' ]]; then
