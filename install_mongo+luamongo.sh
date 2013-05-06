@@ -18,6 +18,9 @@ if [[ `uname` == 'Darwin' ]]; then
     # Get SCons
     brew install scons
 
+    # Install mongo (v2.4.3 or later)
+    brew install mongodb
+
 elif [[ `uname` == 'Linux' ]]; then
     # Ubuntu
     if [[ `which apt-get` == '' ]]; then
@@ -30,34 +33,33 @@ elif [[ `uname` == 'Linux' ]]; then
     sudo apt-get -y install libboost-filesystem-dev
     sudo apt-get -y install libboost-thread-dev
 
+    # Download and install MongoDB, v2.4.3
+    cd /tmp
+    curl -s http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.4.3.tgz > mongodb.tgz
+    tar xvf mongodb.tgz
+    sudo cp -r mongodb-linux-x86_64-2.4.3/bin/* /usr/local/bin/
+
 else
     # Unsupported
     echo 'Platform not supported, aborting...'
     exit
 fi
 
-# Fetch LuaMongo driver
-cd /tmp/
+# Fetch Lua driver's repo:
+cd /tmp
 git clone https://github.com/clementfarabet/luamongo.git
-cd luamongo
-git checkout master
 git pull
 
-# Build and install latest MongoDB - with shared client
-git clone https://github.com/mongodb/mongo.git
-cd mongo
-git checkout v2.4
-git pull
-git apply ../mongo_v2.4_sharedclient.patch
+# Build C++ driver, as a shared lib:
+cd luamongo/mongo-cxx-driver-v2.4
 if [[ `uname` == 'Darwin' ]]; then
-    scons --full --sharedclient install
+    scons install
 elif [[ `uname` == 'Linux' ]]; then
-    sudo scons --full --sharedclient install
+    sudo scons install
 fi
 
-# Build Lua Driver (uses the client above)
+# Build Lua driver:
 cd /tmp/luamongo
-make
 if [[ `uname` == 'Darwin' ]]; then
     make install
 elif [[ `uname` == 'Linux' ]]; then
