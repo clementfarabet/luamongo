@@ -19,6 +19,7 @@ extern int cursor_create(lua_State *L, DBClientBase *connection, const char *ns,
                          const BSONObj *fieldsToReturn, int queryOptions, int batchSize);
 
 extern void lua_to_bson(lua_State *L, int stackpos, BSONObj &obj);
+extern void lua_to_bson_firstkey(lua_State *L, int stackpos, BSONObj &obj, const char *firstkey);
 extern void bson_to_lua(lua_State *L, const BSONObj &obj);
 extern void lua_push_value(lua_State *L, const BSONElement &elem);
 
@@ -816,16 +817,17 @@ static int dbclient_get_last_error_detailed(lua_State *L) {
 static int dbclient_run_command(lua_State *L) {
   DBClientBase *dbclient = userdata_to_dbclient(L, 1);
   const char *ns = luaL_checkstring(L, 2);
-  int options = lua_tointeger(L, 4); // if it is invalid it returns 0
+  const char *firstkey = luaL_checkstring(L, 3);
+  int options = lua_tointeger(L, 5); // if it is invalid it returns 0
 
   BSONObj command; // arg 3
   try {
-    int type = lua_type(L, 3);
+    int type = lua_type(L, 4);
     if (type == LUA_TSTRING) {
-      const char *jsonstr = luaL_checkstring(L, 3);
+      const char *jsonstr = luaL_checkstring(L, 4);
       command = fromjson(jsonstr);
     } else if (type == LUA_TTABLE) {
-      lua_to_bson(L, 3, command);
+      lua_to_bson_firstkey(L, 4, command, firstkey);
     } else {
       throw(LUAMONGO_REQUIRES_JSON_OR_TABLE);
     }

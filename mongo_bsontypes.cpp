@@ -18,6 +18,7 @@ using namespace mongo;
 void push_bsontype_table(lua_State* L, mongo::BSONType bsontype);
 extern const char *bson_name(int type);
 extern void lua_to_bson(lua_State *L, int stackpos, BSONObj &obj);
+extern void lua_to_bson_firstkey(lua_State *L, int stackpos, BSONObj &obj, const char *firstkey);
 extern void bson_to_lua(lua_State *L, const BSONObj &obj);
 
 static int bson_type_Date(lua_State *L) {

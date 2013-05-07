@@ -297,6 +297,42 @@ void lua_to_bson(lua_State *L, int stackpos, BSONObj &obj) {
     obj = builder.obj();
 }
 
+// stackpos must be relative to the bottom, i.e., not negative
+void lua_to_bson_firstkey(lua_State *L, int stackpos, BSONObj &obj, const char *firstkey) {
+    BSONObjBuilder builder;
+
+    lua_newtable(L);
+    int ref = luaL_ref(L, LUA_REGISTRYINDEX);
+
+    // Push first key first:
+    lua_pushstring(L, firstkey);
+    lua_gettable(L, stackpos);
+    lua_append_bson(L, firstkey, -1, &builder, ref);
+    lua_pop(L, 1);
+
+    // Push next keys:
+    for (lua_pushnil(L); lua_next(L, stackpos); lua_pop(L, 1)) {
+        switch (lua_type(L, -2)) { // key type
+            case LUA_TNUMBER: {
+                ostringstream ss;
+                ss << lua_tonumber(L, -2);
+                lua_append_bson(L, ss.str().c_str(), -1, &builder, ref);
+                break;
+            }
+            case LUA_TSTRING: {
+                const char *key = lua_tostring(L, -2);
+                if (strcmp(key, firstkey) != 0) {
+                    lua_append_bson(L, lua_tostring(L, -2), -1, &builder, ref);
+                }
+                break;
+            }
+        }
+    }
+    luaL_unref(L, LUA_REGISTRYINDEX, ref);
+
+    obj = builder.obj();
+}
+
 const char *bson_name(int type) {
     const char *name;
 
