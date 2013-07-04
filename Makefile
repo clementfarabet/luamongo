@@ -14,7 +14,7 @@ OBJS = main.o mongo_bsontypes.o mongo_dbclient.o mongo_replicaset.o mongo_connec
 all: luamongo
 
 install: luamongo
-	cp $(OUTLIB) $(TORCH_PREFIX)/lib/lua/5.1/
+	cp $(OUTLIB) $(TORCH_PREFIX)/lib/torch/lua/
 
 clean:
 	$(RM) $(OBJS) $(OUTLIB)
