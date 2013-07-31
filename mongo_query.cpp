@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <client/dbclient.h>
 
 extern "C" {
@@ -125,6 +126,33 @@ static int query_hint(lua_State *L) {
 static int query_is_explain(lua_State *L) {
     Query *query = userdata_to_query(L, 1);
     lua_pushboolean(L, query->isExplain());
+    return 1;
+}
+
+/*
+ * ok,err = query:read_pref(str, lua_table or json_str)
+ */
+static int query_read_pref(lua_State *L) {
+    Query *query = userdata_to_query(L, 1);
+    std::string mode(luaL_checkstring(L, 2));
+
+    ReadPreference pref;
+    if (mode.compare("nearest") == 0) {
+        pref = ReadPreference_Nearest;
+    } else if (mode.compare("secondary") == 0) {
+        pref = ReadPreference_SecondaryOnly;
+    } else if (mode.compare("primaryPreferred") == 0) {
+        pref = ReadPreference_PrimaryPreferred;
+    } else if (mode.compare("secondaryPreferred") == 0) {
+        pref = ReadPreference_SecondaryPreferred;
+    } else {
+        pref = ReadPreference_PrimaryOnly;
+    }
+    
+    BSONArray tags;
+    query->readPref(pref, tags);
+
+    lua_pushboolean(L, 1);
     return 1;
 }
 
@@ -330,6 +358,7 @@ int mongo_query_register(lua_State *L) {
         {"explain", query_explain},
         {"hint", query_hint},
         {"is_explain", query_is_explain},
+        {"read_pref", query_read_pref},
         {"max_key", query_max_key},
         {"min_key", query_min_key},
         {"snapshot", query_snapshot},
